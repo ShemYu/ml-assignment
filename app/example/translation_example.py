@@ -15,4 +15,4 @@ if __name__ == "__main__":
     generated_tokens = model.generate(**model_inputs, forced_bos_token_id=tokenizer.get_lang_id("ja"))
     result = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
 
-    print(result[0])
+    print(result)
