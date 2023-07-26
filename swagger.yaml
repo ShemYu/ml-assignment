@@ -1,0 +1,132 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  "/translation/":
+    post:
+      summary: Translation
+      operationId: translation_translation__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TranslationRequest"
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TranslationResponse"
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HTTPValidationError"
+  "/healthz":
+    get:
+      summary: Health Check
+      operationId: health_check_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            "$ref": "#/components/schemas/ValidationError"
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Record:
+      properties:
+        id:
+          type: string
+          title: Id
+        text:
+          type: string
+          title: Text
+      type: object
+      required:
+      - id
+      - text
+      title: Record
+    TranslationPayload:
+      properties:
+        fromLang:
+          type: string
+          title: Fromlang
+        toLang:
+          type: string
+          title: Tolang
+        records:
+          items:
+            "$ref": "#/components/schemas/Record"
+          type: array
+          title: Records
+      type: object
+      required:
+      - fromLang
+      - toLang
+      - records
+      title: TranslationPayload
+    TranslationRequest:
+      properties:
+        payload:
+          "$ref": "#/components/schemas/TranslationPayload"
+      type: object
+      required:
+      - payload
+      title: TranslationRequest
+      example:
+        payload:
+          fromLang: en
+          records:
+          - id: '123'
+            text: Life is like a box of chocolates.
+          toLang: ja
+    TranslationResponse:
+      properties:
+        result:
+          items:
+            "$ref": "#/components/schemas/Record"
+          type: array
+          title: Result
+      type: object
+      required:
+      - result
+      title: TranslationResponse
+      example:
+        result:
+        - id: '123'
+          text: 人生はチョコレートの箱のようなものだ。
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
