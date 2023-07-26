@@ -1,4 +1,4 @@
-.PHONY: docker-build docker-run run-uvicorn
+.PHONY: docker-build docker-run run-uvicorn format
 
 DOCKER_IMAGE=python:3.10-slim
 CONTAINER_NAME=dev-env
@@ -15,3 +15,7 @@ docker-run:
 
 run-uvicorn:
 	sh bin/entrypoint.sh --reload
+
+format:
+	@isort .
+	@black .
