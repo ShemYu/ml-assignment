@@ -1,1 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: translation-deployment
+  labels:
+    app: translation
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: translation
+  template:
+    metadata:
+      labels:
+        app: translation
+    spec:
+      containers:
+      - name: translation
+        image: translate_service:latest
+        ports:
+        - containerPort: 9527
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: translation-service
+spec:
+  selector:
+    app: translation
+  ports:
+    - protocol: TCP
+      port: 9527
+      targetPort: 9527
