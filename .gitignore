@@ -1,0 +1,39 @@
+# .gitignore
+
+# Python related
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+*.venv
+*.log
+
+# Local environment files
+.env
+.venv/
+.envrc
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Ignore model files
+*.h5
+*.hdf5
+*.pkl
+*.model
+
+# test outputs
+test-output/
