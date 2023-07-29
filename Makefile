@@ -1,6 +1,5 @@
 .PHONY: docker-build docker-run run-uvicorn format
 
-DOCKER_IMAGE=python:3.10-slim
 CONTAINER_NAME=dev-env
 DOCKER_TAG ?= translate_service:latest
 DOCKER_BUILD_CONTEXT = .
