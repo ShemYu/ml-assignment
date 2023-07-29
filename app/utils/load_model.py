@@ -10,7 +10,7 @@ async def load_model():
     if model == None:
         model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
     if tokenizer == None:
-        tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M", src_lang="en", tgt_lang="fr")
+        tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
     return model, tokenizer
 
 
