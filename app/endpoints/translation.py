@@ -14,7 +14,7 @@ router = APIRouter(prefix="/translation")
 async def translation(request_body: TranslationRequest):
     # src_text = "Life is like a box of chocolates."
     # tgt_lang = "人生はチョコレートの箱のようなものだ。"
-    model, tokenizer = await load_model()
+    model, tokenizer, device = await load_model()
     try:
         tokenizer.src_lang = request_body.payload.fromLang
     except KeyError:
@@ -23,7 +23,7 @@ async def translation(request_body: TranslationRequest):
     result_records: List[Record] = []
 
     for record in request_body.payload.records:
-        model_inputs = tokenizer(record.text, return_tensors="pt")
+        model_inputs = tokenizer(record.text, return_tensors="pt").to(device)
         try:
             generated_tokens = model.generate(**model_inputs, forced_bos_token_id=tokenizer.get_lang_id(to_lang))
         except KeyError as e:

@@ -11,7 +11,7 @@ app.include_router(translation_router)
 @app.on_event("startup")
 async def startup_event():
     exception_handler.load_exception_handler(app)
-    _, _ = await load_model.load_model()
+    _ = await load_model.load_model()
 
 
 @app.get("/healthz")
