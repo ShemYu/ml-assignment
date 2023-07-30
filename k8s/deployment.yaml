@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: translation
-        image: ${REGISTRY_CLUSTER_IP}:80/translate_service:latest
+        image: ${REGISTRY_CLUSTER_IP}/translate_service:latest # Please set REGISTRY_CLUSTER_IP before deployment
         ports:
         - containerPort: 9527
         # resources: # Minikube when using the Docker driver doesn't support GPU access
