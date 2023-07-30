@@ -1,0 +1,8 @@
+eval $(minikube -p minikube docker-env)
+DOCKER_TAG=translate_service:latest
+DOCKER_BUILD_CONTEXT=.
+DOCKER_FILE_PATH=Dockerfile
+MINIKUBE_REGISTRY=10.102.32.249:80
+docker build -t $DOCKER_TAG -f $DOCKER_FILE_PATH $DOCKER_BUILD_CONTEXT
+docker tag $DOCKER_TAG $MINIKUBE_REGISTRY/$DOCKER_TAG
+docker push $MINIKUBE_REGISTRY/$DOCKER_TAG
