@@ -1,5 +1,5 @@
-from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 import torch
+from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
 
 model = None
