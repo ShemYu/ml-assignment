@@ -17,6 +17,8 @@ This service leverages the state-of-the-art `M2M100` translation model, allowing
 ### CPU and GPU Support
 Built with efficiency in mind, the translation service is designed to run on both CPU and GPU environments. Whether you need to scale it on robust GPU-powered machines or deploy it in CPU-only clusters, the service maintains performance and flexibility.
 
+- Based Image: `pytorch/pytorch:1.11.0-cuda11.3-cudnn8-devel` depends on `transformers[torch]==4.21.0`
+
 ## Getting Started
 The entire process has been successfully tested on AWS AMI: `Deep Learning AMI GPU PyTorch 1.11.0 (Amazon Linux 2) 20221018`, follow these steps to quickly set up and run the multilingual translation service locally:
 
@@ -41,11 +43,40 @@ sh bin/minikube/minikube_install.sh
 ### 3. Deploy to Kubernetes
 Run the following command to deploy the service to your Kubernetes cluster.
 
+#### 3.1. CUDA (Optional, based on the environment)
+
+If you're env support cuda, please unmark lines below (`k8s/deployment.yaml`22:24).
+```yaml
+    spec:
+      containers:
+      - name: translation
+        image: ${REGISTRY_CLUSTER_IP}/translate_service:latest
+        ports:
+        - containerPort: 9527
+        # resources: # Minikube when using the Docker driver doesn't support GPU access
+        #   limits:
+        #     nvidia.com/gpu: 1
+```
+
+Run the script, it will build the docker image, push it to local registry, and deploy it to minikube:
 ```bash
 sh bin/minikube_build_and_deploy.sh
 ```
 
-### Test the Service
+### 3. Deploy to local container (Optional)
+If you want to deploy local without minikube, you can build and run by docker:
+```bash
+docker build -t translate_service:latest -f Dockerfile .
+docker run -p 9527:9527 translate_service:latest
+```
+or if you can use `make` command:
+```bash
+make docker-build
+make docker-run
+```
+
+
+### 4. Test the Service
 Once the service is deployed, you can test it using the following curl command:
 
 ```bash
@@ -78,7 +109,9 @@ You should see the following response:
 }
 ```
 
-### Clean up
+Or, you could see the document at `http://localhost:9527/docs`
+
+### 5. Clean up (Optional)
 If you want to delete your local deployment, you can run:
 
 ```bash
@@ -86,49 +119,34 @@ kubectl delete -f k8s/deployment.yaml
 ```
 
 ## Project Structure
-This project is organized with a focus on modularity and extensibility. The core of the application is contained within the app/ directory. Here's a brief overview of its structure:
 
 ```bash
 .
-├── Dockerfile
-├── Makefile
-├── README.md
-├── app
-│   ├── endpoints
+├── Dockerfile                     
+├── Makefile                       # Makefile for automating common tasks
+├── README.md                      
+├── app                            # Main application code
+│   ├── endpoints                  # Endpoint definitions for the API
 │   │   └── translation.py
-│   ├── example
+│   ├── example                    # Example scripts or usage supplied by G123
 │   │   ├── README.md
 │   │   └── translation_example.py
-│   ├── main.py
-│   ├── models
+│   ├── main.py                    # Main entry point for the application
+│   ├── models                     # Data models used by the application
 │   │   └── translation.py
-│   ├── requirements.txt
-│   └── utils
-│       ├── exception_handler.py
-│       └── load_model.py
-├── bin
-│   ├── entrypoint.sh
-│   ├── minikube
+│   ├── requirements.txt           # Required dependencies
+│   └── utils                      # Utility functions and classes
+│       ├── exception_handler.py   # Exception handling logic
+│       └── load_model.py          # Model loading functions
+├── bin                            # Shell scripts
+│   ├── entrypoint.sh              # Entry point for the Docker container
+│   ├── minikube                   # Scripts related to Minikube
 │   │   ├── kubectl_install.sh
 │   │   └── minikube_install.sh
-│   └── minikube_build_and_deploy.sh
-├── k8s
+│   └── minikube_build_and_deploy.sh # Script to build and deploy to Minikube
+├── k8s                            # Kubernetes deployment files
 │   └── deployment.yaml
-├── pyproject.toml
-└── swagger.yaml
+├── pyproject.toml                 # Linter's configuration
+└── swagger.yaml                   # Swagger definition for the API
+
 ```
-
-### app/
-- endpoints/: Contains the definitions for all the API endpoints. For example, translation-related endpoints can be found in translation.py.
-- example/: Includes the example code given by assignment, such as translation_example.py.
-- main.py: The entry point of the application, where the FastAPI app is instantiated and routers are included.
-- models/: Houses the data models for the application, defined using Pydantic.
-- utils/: Contains utility functions and classes, such as exception handling and model loading.
-- requirements.txt: Lists the Python package dependencies required for the application.
-
-The structure is designed to make it easy to add new endpoints, models, or utilities without affecting the existing system. It provides clear separation and organization, supporting both development flexibility and maintainability.
-
-### Other Directories
-- k8s/: Kubernetes deployment files.
-- bin/: Contains scripts related to building and deploying the application.
-- Dockerfile: Defines the Docker image for the application.
