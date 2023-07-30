@@ -10,7 +10,7 @@ app.include_router(translation_router)
 
 @app.on_event("startup")
 async def startup_event():
-    exception_handler.load_exception_handler(app)
+    await exception_handler.load_exception_handler(app)
     _ = await load_model.load_model()
 
 
