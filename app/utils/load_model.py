@@ -18,4 +18,5 @@ async def load_model():
 
 
 if __name__ == "__main__":
-    load_model()
+    M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
+    M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")

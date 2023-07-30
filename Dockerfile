@@ -6,4 +6,4 @@ RUN pip install --upgrade pip
 RUN pip install --timeout 150 -r app/requirements.txt
 RUN python app/utils/load_model.py
 EXPOSE 9527
-# ENTRYPOINT [ "sh", "bin/entrypoint.sh", "--reload" ]
+ENTRYPOINT [ "sh", "bin/entrypoint.sh"]
