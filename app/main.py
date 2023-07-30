@@ -6,11 +6,11 @@ from app.utils import exception_handler, load_model
 
 app = FastAPI()
 app.include_router(translation_router)
+exception_handler.load_exception_handler(app)
 
 
 @app.on_event("startup")
 async def startup_event():
-    await exception_handler.load_exception_handler(app)
     _ = await load_model.load_model()
 
 

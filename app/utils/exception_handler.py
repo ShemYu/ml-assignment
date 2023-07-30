@@ -9,11 +9,11 @@ class InvalidLanguageError(Exception):
         self.message = f"The input {error_input_key} `{error_input_value}` is an invalid language, please check."
 
 
-async def error_handler(request: Request, exc: InvalidLanguageError):
-    return JSONResponse(status_code=exc.code, content={"error": {"name": exc.name, "message": exc.message}},)
+async def general_error_handler(request: Request, exc):
+    return JSONResponse(status_code=exc.code, content={"error": {"name": exc.name, "message": exc.message}})
 
 
-async def load_exception_handler(app):
+def load_exception_handler(app):
     exception_list = [InvalidLanguageError]
-    for exec in exception_list:
-        app.add_exception_handler(exec, error_handler)
+    for exc in exception_list:
+        app.exception_handler(exc)(general_error_handler)
