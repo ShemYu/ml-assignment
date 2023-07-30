@@ -18,9 +18,9 @@ This service leverages the state-of-the-art `M2M100` translation model, allowing
 Built with efficiency in mind, the translation service is designed to run on both CPU and GPU environments. Whether you need to scale it on robust GPU-powered machines or deploy it in CPU-only clusters, the service maintains performance and flexibility.
 
 - Based Image: `pytorch/pytorch:1.11.0-cuda11.3-cudnn8-devel` depends on `transformers[torch]==4.21.0`
+- The GPU support has been successfully tested on AWS AMI: `Deep Learning AMI GPU PyTorch 1.11.0 (Amazon Linux 2) 20221018`
 
 ## Getting Started
-The entire process has been successfully tested on AWS AMI: `Deep Learning AMI GPU PyTorch 1.11.0 (Amazon Linux 2) 20221018`, follow these steps to quickly set up and run the multilingual translation service locally:
 
 ### 1. Clone the Project
 First, you need to clone this repository to your local environment.
