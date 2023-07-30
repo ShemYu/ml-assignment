@@ -4,7 +4,11 @@ from app.endpoints.translation import router as translation_router
 from app.utils import exception_handler, load_model
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Translation Service API",
+    description="This is a translation service API that translates text between different languages.",
+    version="1.0.0",
+)
 app.include_router(translation_router)
 exception_handler.load_exception_handler(app)
 
@@ -14,7 +18,7 @@ async def startup_event():
     """Startup event to load the translation model.
 
     This function loads the translation model when the application starts.
-    
+
     Returns:
         None
     """
