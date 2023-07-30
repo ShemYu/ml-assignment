@@ -15,8 +15,3 @@ async def load_model():
     if tokenizer == None:
         tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
     return model, tokenizer, device
-
-
-if __name__ == "__main__":
-    M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
-    M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
