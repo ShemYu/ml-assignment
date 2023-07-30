@@ -33,4 +33,8 @@ class TranslationResponse(BaseModel):
     result: List[Record]
 
     class Config:
-        json_schema_extra = {"example": {"result": [{"id": "123", "text": "人生はチョコレートの箱のようなものだ。"}],}}
+        json_schema_extra = {
+            "example": {
+                "result": [{"id": "123", "text": "人生はチョコレートの箱のようなものだ。"}],
+            }
+        }
