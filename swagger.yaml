@@ -1,11 +1,26 @@
 openapi: 3.1.0
 info:
-  title: FastAPI
-  version: 0.1.0
+  title: Translation Inference Service
+  description: |-
+    This project aims to implement a translation inference service that runs on Kubernetes and provides a RESTful API on port 9527.
+
+    Utilizing the `M2M100` translation model, this service is capable of translating text, accessible through a simple HTTP request.
+
+    The primary goal of this project is to create a scalable and efficient translation service that can fully leverage CPU and GPU resources for optimal performance.
+  version: 1.0.0
 paths:
   "/translation/":
     post:
       summary: Translation
+      description: |-
+        Translate Text from Source Language to Target Language
+
+        This endpoint provides a translation service using the M2M100 model. It accepts a request containing the source text,
+        source language (fromLang), and target language (toLang), along with other details. The translation is performed,
+        and the translated text is returned in the response.
+
+        **Notes:**
+        - Ensure the source and target language codes are supported by the M2M100 model.
       operationId: translation_translation__post
       requestBody:
         content:
@@ -29,6 +44,14 @@ paths:
   "/healthz":
     get:
       summary: Health Check
+      description: |-
+        Health check endpoint.
+
+        This endpoint is used to check the health of the application.
+        A successful response indicates that the application is running as expected.
+
+        Returns:
+            dict: A JSON object with a single key `status` with a value of "OK".
       operationId: health_check_healthz_get
       responses:
         '200':
@@ -52,9 +75,11 @@ components:
         id:
           type: string
           title: Id
+          description: Unique identifier for each record
         text:
           type: string
           title: Text
+          description: The text to be translated
       type: object
       required:
       - id
@@ -65,14 +90,17 @@ components:
         fromLang:
           type: string
           title: Fromlang
+          description: Source language code (e.g., 'en' for English)
         toLang:
           type: string
           title: Tolang
+          description: Target language code (e.g., 'ja' for Japanese)
         records:
           items:
             "$ref": "#/components/schemas/Record"
           type: array
           title: Records
+          description: List of records to be translated
       type: object
       required:
       - fromLang
@@ -82,7 +110,10 @@ components:
     TranslationRequest:
       properties:
         payload:
-          "$ref": "#/components/schemas/TranslationPayload"
+          allOf:
+          - "$ref": "#/components/schemas/TranslationPayload"
+          description: Payload containing all necessary details for the translation
+            request
       type: object
       required:
       - payload
@@ -101,6 +132,7 @@ components:
             "$ref": "#/components/schemas/Record"
           type: array
           title: Result
+          description: List of records containing the translation results
       type: object
       required:
       - result
