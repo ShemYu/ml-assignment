@@ -13,7 +13,7 @@ docker-run:
 	@docker run -v ${PWD}:/app -p 9527:9527 --name $(CONTAINER_NAME) $(DOCKER_TAG)
 
 docker-run-dev:
-	@docker run -it --rm -v ${PWD}:/app -p 9527:9527 --name $(CONTAINER_NAME) $(DOCKER_TAG) /bin/bash
+	@docker run -it --gpus all --rm -v ${PWD}:/app -p 9527:9527 --name $(CONTAINER_NAME) $(DOCKER_TAG) /bin/bash
 
 run-uvicorn:
 	sh bin/entrypoint.sh --reload
