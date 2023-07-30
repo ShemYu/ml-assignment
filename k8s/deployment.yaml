@@ -5,7 +5,7 @@ metadata:
   labels:
     app: translation
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: translation
@@ -16,15 +16,19 @@ spec:
     spec:
       containers:
       - name: translation
-        image: translate_service:latest
+        image: ${REGISTRY_CLUSTER_IP}:80/translate_service:latest
         ports:
         - containerPort: 9527
+        # resources: # Minikube when using the Docker driver doesn't support GPU access
+        #   limits:
+        #     nvidia.com/gpu: 1
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: translation-service
 spec:
+  type: NodePort
   selector:
     app: translation
   ports:
